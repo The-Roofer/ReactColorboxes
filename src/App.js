@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
-function App() {
+function Square({ color, onMouseEnter }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="colorbox"
+      style={{ backgroundColor: color }}
+      onMouseEnter={onMouseEnter}
+    >   
     </div>
   );
 }
 
-export default App;
+export default function Container({boxNumber}) 
+{
+  const randomColors = ["red", "blue", "yellow","purple","orange","green"];
+  const [colors, setColors] = useState(Array(boxNumber).fill("grey")||Array(9).fill("grey"));
+
+  function handleMouseEnter(mapKey)
+    {
+      const newColors = [...colors];
+      let randomColor;
+
+      console.log("Square is", Square, "and its type is", typeof Square);
+      console.log("<Square/> is", <Square/>, "and its type is", typeof <Square/>);
+      console.log("colors is", colors, "and its type is", typeof colors);
+      console.log("useState is ",useState," and its type is ",typeof useState)
+      console.log("newColors is ", newColors, "and its type is", typeof newColors);
+      console.log("mapKey is ", mapKey, "and its type is", typeof mapKey);
+      console.log("colors.map is", colors.map( (mapElement, mapKey) => (<Square key={mapKey} color={mapElement} 
+
+      onMouseEnter={() => { handleMouseEnter(mapKey); } } /> ) ), "and its type is", typeof colors.map((mapElement, mapKey) => (<Square key={mapKey} color={mapElement} 
+      onMouseEnter={() => { handleMouseEnter(mapKey); } } /> ) ));
+
+      do 
+      {
+        randomColor = randomColors[Math.floor(Math.random() * randomColors.length)];
+      } 
+      while (randomColor === newColors[mapKey]);
+
+      newColors[mapKey] = randomColor;
+
+      console.log("randomColor is ",randomColor,"and its type is ",typeof randomColor);
+
+      setColors(newColors);
+  }
+
+  return (
+    <>
+      <div className="container">
+        {
+          colors.map((mapElement, mapKey) => (<Square key={mapKey} color={mapElement} 
+            onMouseEnter={() => { handleMouseEnter(mapKey); } } /> ) )
+          }
+      </div>
+    </>
+  );
+}
